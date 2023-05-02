@@ -34,9 +34,8 @@ public class Jeu {
     public boolean isMoveOk(int xInit, int yInit, int xFinal, int yFinal){
         if(isPieceHere(xInit,yInit)){
             Pieces piece = findPiece(xInit,yInit);
-            if(piece.isMoveOk(xFinal,yFinal)){
-                return true;
-            }
+            assert piece != null;
+            return piece.isMoveOk(xFinal, yFinal);
         }
         return false;
     }
