@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.LinkedList;
 
 
-public class Jeu extends Object{
-    private Couleur couleur;
-    private List<Pieces> pieces;
+public class Jeu {
+    private final Couleur couleur;
+    private final List<Pieces> pieces;
 
     public Jeu(Couleur couleur){
         this.couleur = couleur;
