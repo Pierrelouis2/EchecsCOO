@@ -1,86 +1,125 @@
 package model;
 
-import java.util.Objects;
+import java.util.LinkedList;
+import java.util.List;
 
-public  class Echiquier implements BoardGames {
-    private Jeu jeuBlanc;
-    private Jeu jeuNoir;
+public class Echiquier implements BoardGames {
+
+    private final Jeu jeuBlanc;
+    private final Jeu jeuNoir;
     private Jeu jeuCourant;
-    private Jeu jeuNoncourant;
-    private String message;
-    private Jeu ;
+    private Jeu jeuNonCourant;
+    private String message = "";
 
-    public Echiquier(){
+    public Echiquier() {
         this.jeuBlanc = new Jeu(Couleur.BLANC);
         this.jeuNoir = new Jeu(Couleur.NOIR);
         this.jeuCourant = jeuBlanc;
-        this.jeuNoncourant = jeuNoir;
-    }
-    public String getmessage() {
-        return message;
-    }
-    private void setMessage() {
-        this.message = toString();
-    }
-    @Override
-    public String toString(){
-        String ret = jeuBlanc.toString() + '\n' + '\n';
-        ret += jeuNoir.toString() + '\n' + '\n';
-        ret += jeuCourant.toString() + '\n' + '\n';
-        ret += jeuNoncourant.toString() + '\n' + '\n';
-        return ret;
+        this.jeuNonCourant = jeuNoir;
     }
 
-    @Override
-    public boolean move(int xInit, int yInit, int xFinal, int yFinal) {
-        return false;
-    }
-
-    @Override
-    public boolean isEnd() {
-        return false;
+    private void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return message;
     }
 
     @Override
+    public String toString() {
+        return "Echiquier \n[jeuBlanc=" + jeuBlanc + ", \njeuNoir=" + jeuNoir + ",\n message=" + message + "]";
+    }
+
+    public void switchJoueur() {
+        Jeu jeuTemp = jeuCourant;
+        jeuCourant = jeuNonCourant;
+        jeuNonCourant = jeuTemp;
+    }
+
+    public Pieces getPieceXY(int x, int y) {
+        for (Pieces p : jeuCourant.getPieces()) {
+            if (p.getX()==x && p.getY()==y) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public boolean isMoveOk(int xInit, int yInit, int xFinal, int yFinal) {
+        Pieces p = getPieceXY(xInit, yInit);
+        return p.isMoveOk(xFinal, yFinal);
+    }
+
+    @Override
+    public boolean move(int xInit, int yInit, int xFinal, int yFinal) {
+        boolean ret = false;
+        Pieces movingPiece;
+        if (isMoveOk(xInit, yInit, xFinal, yFinal)) {
+            movingPiece = getPieceXY(xInit, yInit);
+            if (movingPiece == null) {
+                setMessage("Pas de pièce à cet endroit");
+                return false;
+            }
+            movingPiece.move(xFinal, yFinal);
+            ret = true;
+            // on vérifie si le roi est en échec et on rollback si besoin
+            Coord Cooroi = jeuCourant.getKingCoord();
+            for (Pieces p2: jeuNonCourant.getPieces()){
+                if (p2.isMoveOk(Cooroi.x,Cooroi.y)){
+                    movingPiece.move(xInit, yInit);
+                    ret = false;
+                    setMessage("Votre roi est en échec si vous jouez ce coup");
+                }
+            }
+            Pieces capturePiece = getPieceXY(xFinal, yFinal);
+            if (capturePiece != null) {
+                capturePiece.capture();
+                setMessage("Vous avez capturé une pièce");
+            }
+        }
+        return ret;
+    }
+
+    public List<PieceIHM> getPiecesIHM(){
+        List<PieceIHM> listPieceIHM = new LinkedList<PieceIHM>();
+        List<Pieces> allPieces = new LinkedList<>();
+        allPieces.addAll(jeuCourant.getPieces());
+        allPieces.addAll(jeuNonCourant.getPieces());
+        for (Pieces p : allPieces){
+            PieceIHM pihm = new PieceIHM(p.getClass().getSimpleName(), p.getCouleur());
+            pihm.add(new Coord(p.getX(), p.getY()));
+            listPieceIHM.add(pihm);
+        }
+        return listPieceIHM;
+    }
+
+    @Override
+    public boolean isEnd() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+
+    @Override
     public Couleur getColorCurrentPlayer() {
+        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Couleur getPieceColor(int x, int y) {
+        // TODO Auto-generated method stub
         return null;
     }
-    public void switchJoueur(){
-        Jeu jeuPivot;
-        jeuPivot = jeuCourant;
-        jeuCourant = jeuNoncourant;
-        jeuNoncourant = jeuPivot;
-    }
-    public boolean obstacle(){
-        return false;
-    }
-    public boolean isMoveOk(int xInit, int yInit, int xFinal, int yFinal){
-        if(jeuCourant.isPieceHere(xInit,yInit)){
-            if(jeuCourant.isMoveOk(xInit, yInit, xFinal, yFinal)){
-                if(!obstacle() || (Objects.equals(jeuCourant.getPieceType(xInit, yInit), "Cavalier"))){
-                    if(!jeuCourant.isPieceHere(xFinal,yFinal) || (Objects.equals(jeuCourant.getPieceType(xInit, yInit), "Roi"))){
 
-                    }
 
-                }
-            };
-        }
-    }
+
     public static void main(String[] args) {
-        Echiquier echiquier = new Echiquier();
-        System.out.println(echiquier);
-        echiquier.switchJoueur();
-        System.out.println(echiquier);
+        Echiquier e = new Echiquier();
+        System.out.println(e);
 
     }
+
 }

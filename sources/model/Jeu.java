@@ -13,6 +13,12 @@ public class Jeu {
         this.couleur = couleur;
         this.pieces  = ChessPiecesFactory.newPieces(couleur);
     }
+    public List<Pieces> getPieces() {
+        return pieces;
+    }
+    public Couleur getCouleur(){
+        return this.couleur;
+    }
     private Pieces findPiece(int x, int y){
         if(isPieceHere(x,y)){
             for(Pieces piece : pieces){
@@ -59,9 +65,7 @@ public class Jeu {
     public java.lang.String getPieceType(int x, int y){
         return findPiece(x,y).getClass().getSimpleName();
     }
-    public Couleur getCouleur(){
-        return this.couleur;
-    }
+
     public void setCastling(){
 
 
@@ -73,10 +77,7 @@ public class Jeu {
 
     }
     public boolean isPawnPromotion(int xFinal, int yFinal){
-        if(yFinal == 0 || yFinal == 7 ){
-            return true;
-        }
-        return false;
+        return yFinal == 0 || yFinal == 7;
     }
     public boolean pawnPromotion(int xFinal, int yFinal, java.lang.String type){
         if(isPawnPromotion(xFinal,yFinal)){
@@ -91,7 +92,7 @@ public class Jeu {
 
     public Coord getKingCoord(){
         for(Pieces piece : pieces){
-            if(piece.getClass().getName() == "Roi"){
+            if(piece.getClass().getName().equals("Roi")){
                 return new Coord(piece.getX(), piece.getY());
             }
         }
@@ -129,11 +130,11 @@ public class Jeu {
 
     @Override
     public String toString() {
-        String ret = " Couleur : " + this.couleur + '\n';
+        StringBuilder ret = new StringBuilder(" Couleur : " + this.couleur + '\n');
         for(Pieces pieces1 : pieces){
-            ret +=" " + pieces1.toString() + '\n' ;
+            ret.append(" ").append(pieces1.toString()).append('\n');
         }
-        return ret;
+        return ret.toString();
     }
     public static void main(String[] args) {
         Jeu jeu = new Jeu(Couleur.NOIR);
@@ -148,14 +149,14 @@ public class Jeu {
     private static void testJeu(Jeu jeu) {
         System.out.println("  a b c d e f g h");
         for (int j = 0; j < 8; j++) {
-            String line = (j + 1) + " ";
+            StringBuilder line = new StringBuilder((j + 1) + " ");
             for (int i = 0; i < 8; i++) {
                 if (jeu.isPieceHere(i,j) ) {
-                    line += jeu.getPieceType(i,j);
+                    line.append(jeu.getPieceType(i, j));
                 } else {
-                    line += ".";
+                    line.append(".");
                 }
-                    line += " ";
+                    line.append(" ");
                 }
             System.out.println(line);
         }
