@@ -11,7 +11,7 @@ import controler.AbstractChessGameControler;
  *         de jouer, de déplacer une image de pièce sur le damier
  *
  */
-public abstract class ChessGameControler extends AbstractChessGameControler {
+public class ChessGameControler extends AbstractChessGameControler {
 	
 	public ChessGameControler(ChessGame chessGame) {
 		super(chessGame);

@@ -8,7 +8,7 @@ import java.util.Observer;
 import model.BoardGames;
 import model.Coord;
 import model.Couleur;
-// import model.Echiquier;
+import model.Echiquier;
 
 
 /**
@@ -19,9 +19,9 @@ import model.Couleur;
  * (DP Proxy, Facade, Observer)
  *
  */
-public abstract class ChessGame extends Observable implements BoardGames{
+public class ChessGame extends Observable implements BoardGames{
 
-	//private Echiquier echiquier;
+	private Echiquier echiquier;
 
 	/**
 	 * Cree une instance de la classe Echiquier
@@ -29,8 +29,8 @@ public abstract class ChessGame extends Observable implements BoardGames{
 	 */
 	public ChessGame() {
 		super();
-		//this.echiquier = new Echiquier();
-		//this.notifyObservers(echiquier.getPiecesIHM());
+		this.echiquier = new Echiquier();
+		this.notifyObservers(echiquier.getPiecesIHM());
 	}
 
 
@@ -40,8 +40,8 @@ public abstract class ChessGame extends Observable implements BoardGames{
 	@Override
 	public String toString() {
 		String st = "";
-		//st += "\n" + echiquier.getMessage() + "\n";
-		//st = echiquier.toString();
+		st += "\n" + echiquier.getMessage() + "\n";
+		st = echiquier.toString();
 		return  st;
 	}
 
@@ -60,34 +60,34 @@ public abstract class ChessGame extends Observable implements BoardGames{
 	public boolean move (int xInit, int yInit, int xFinal, int yFinal){
 		boolean ret = false; 
 
-		//ret = echiquier.isMoveOk(xInit, yInit, xFinal, yFinal);
+		ret = echiquier.isMoveOk(xInit, yInit, xFinal, yFinal);
 		if (ret){
-			//ret = echiquier.move(xInit, yInit, xFinal, yFinal);
+			ret = echiquier.move(xInit, yInit, xFinal, yFinal);
 		}
 		if (ret){
-			//echiquier.switchJoueur();
+			echiquier.switchJoueur();
 		}		
 		
-		//this.notifyObservers(echiquier.getPiecesIHM());
+		this.notifyObservers(echiquier.getPiecesIHM());
 		return ret;	
 	}
 
-	//public boolean isEnd(){
-		//return echiquier.isEnd();
-	//}
+	public boolean isEnd(){
+		return echiquier.isEnd();
+	}
 
-	//public String getMessage() {
-		//return echiquier.getMessage();
-	//}
+	public String getMessage() {
+		return echiquier.getMessage();
+	}
 
 
-	//public Couleur getColorCurrentPlayer(){
-		//return echiquier.getColorCurrentPlayer();
-	//}
+	public Couleur getColorCurrentPlayer(){
+		return echiquier.getColorCurrentPlayer();
+	}
 
-	//public Couleur getPieceColor(int x, int y){
-		//return echiquier.getPieceColor(x, y);
-	//}
+	public Couleur getPieceColor(int x, int y){
+		return echiquier.getPieceColor(x, y);
+	}
 
 	
 
@@ -106,6 +106,6 @@ public abstract class ChessGame extends Observable implements BoardGames{
 	@Override
 	public void addObserver(Observer o){
 		super.addObserver(o);
-		//this.notifyObservers(echiquier.getPiecesIHM());
+		this.notifyObservers(echiquier.getPiecesIHM());
 	}
 }

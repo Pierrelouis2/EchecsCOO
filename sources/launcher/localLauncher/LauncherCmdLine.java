@@ -19,14 +19,14 @@ public class LauncherCmdLine {
 		ChessGameControler controler;	
 		ChessGameCmdLine vue;
 		
-		//model = new ChessGame();
-		//controler = new ChessGameControler(model);
-		
-		//new ChessGameCmdLine(controler);
-		
-		//vue = new ChessGameCmdLine(controler);
-		//model.addObserver((Observer) vue);
-		//vue.go();
+		model = new ChessGame();
+		controler = new ChessGameControler(model);
+
+		new ChessGameCmdLine(controler);
+
+		vue = new ChessGameCmdLine(controler);
+		model.addObserver(vue);
+		vue.go();
 	}
 
 }

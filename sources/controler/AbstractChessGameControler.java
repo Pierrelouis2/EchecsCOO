@@ -70,27 +70,27 @@ public abstract class AbstractChessGameControler implements ChessGameControlers 
 	protected abstract void endMove(Coord initCoord, Coord finalCoord, String promotionType) ;
 
 
-	//public boolean isEnd(){
-		//return this.chessGame.isEnd();
-	//}
+	public boolean isEnd(){
+		return this.chessGame.isEnd();
+	}
 
 	public String getMessage() {
 		String ret = null;		 
-		//ret = this.chessGame.getMessage();
+		ret = this.chessGame.getMessage();
 		return ret;
 	}
 
-	//public String toString() {
-		//return this.chessGame.toString();
-	//}
+	public String toString() {
+		return this.chessGame.toString();
+	}
 
 	
-	//protected Couleur getColorCurrentPlayer(){
-		//return this.chessGame.getColorCurrentPlayer();
-	//}
+	protected Couleur getColorCurrentPlayer(){
+		return this.chessGame.getColorCurrentPlayer();
+	}
 
-	//protected Couleur getPieceColor(Coord initCoord){
-		//return this.chessGame.getPieceColor(initCoord.x, initCoord.y);
-	//}
+	protected Couleur getPieceColor(Coord initCoord){
+		return this.chessGame.getPieceColor(initCoord.x, initCoord.y);
+	}
 	
 }
